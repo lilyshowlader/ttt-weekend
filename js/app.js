@@ -33,11 +33,12 @@ console.log(squareEls)
 const messageEl = document.querySelector("#message")
 console.log(messageEl)
 const boardEl = document.querySelector('.board')
+const resetBtnEl = document.querySelector('#reset-button')
 
 /*--------------------------- Event Listeners -----------------------*/
 
 boardEl.addEventListener('click', handleClick) 
-
+resetBtnEl.addEventListener('click', init)
 
 /*------------------------------ Functions --------------------------*/
 // Step 3 - Upon loading, the game state should be initialized, and a function 
@@ -60,10 +61,16 @@ function init() {
 }
 
 // Step 6A-6H within the handleClick function 
+// Step 6d: this step we're only creating return statements for two events: One is if the winner value is 1(x) or -1(o), we will return nothing. The other event is if there is a value in the sqidx (other player can't access the square and override the value) ex. [1, null, null, null, null, null, null, null, null]
+// we're setting this up so that in these two events nothing will happen
 // handleClick
 function handleClick(evt) {
   let sqIdx = parseInt(evt.target.id[2])
-  if (winner === 1 || winner === -1) {
+  console.log(sqIdx)
+  if (!sqIdx && sqIdx !== 0) {
+    return 
+  }
+  if (winner) {
     return
   }
   if (board[sqIdx]) {
@@ -75,8 +82,30 @@ function handleClick(evt) {
   render()
 }
 
-// Step 6d: this step we're only creating return statements for two events: One is if the winner value is 1(x) or -1(o), we will return nothing. The other event is if there is a value in the sqidx (other player can't access the square and override the value) ex. [1, null, null, null, null, null, null, null, null]
-// we're setting this up so that in these two events nothing will happen
+
+//if (/=== 1 || winner === -1 || winner === 'T') (alternative to if(winner))
+// this functions runs after everytime someone makes a move 
+
+function getWinner() {
+  let bestCombo = []
+  winningCombos.forEach(function(combo){
+    //combo //combo will look like [0,1,2]
+    // let comboValue = 0
+    let comboValue = board[combo[0]] + board[combo[1]] + board[combo[2]]
+    bestCombo.push(Math.abs(comboValue))
+  }) 
+    let winnersCombo = bestCombo.some(function(value){
+      return value === 3
+    })
+    if (winnersCombo === true) {
+      return turn * -1
+    } else if (!board.some(function(value){return value === null})){
+      return 'T'
+    }
+      return null
+    
+    
+}
 
 // Step 4 - The state of the game should be displayed to the user. We typed out a function named render above - we now have to define what our render function does. 
 // 4a) Create a function called render
@@ -104,9 +133,9 @@ function render() {
   })
   if (winner === null) {
     if(turn === 1) {
-      messageEl.textContent = "It's player ones turn"
+      messageEl.textContent = "Player One- Time to play!"
     } else {
-      messageEl.textContent = "It's player twos turn"
+      messageEl.textContent = "Player Two- Time to play!"
     }
     // the above displays who's turn it is
   } else if (winner === 'T') {
