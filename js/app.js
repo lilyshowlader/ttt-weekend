@@ -71,7 +71,8 @@ function handleClick(evt) {
   }
   board[sqIdx] = turn 
   turn = turn * -1 
-  
+  winner = getWinner()
+  render()
 }
 
 // Step 6d: this step we're only creating return statements for two events: One is if the winner value is 1(x) or -1(o), we will return nothing. The other event is if there is a value in the sqidx (other player can't access the square and override the value) ex. [1, null, null, null, null, null, null, null, null]
