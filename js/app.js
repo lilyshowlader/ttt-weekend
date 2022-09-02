@@ -1,12 +1,15 @@
 /*------------------------ Constants --------------------------------*/
 //A constant's value does not change and remains constant indefinitely
 // Step 5 - Define the required constants
-// 5a) In a constant called `winningCombos` define the eight possible winning combinations 
-// as an array of arrays.
+// 5a) In a constant called `winningCombos` define the eight possible winning combinations as an array of arrays.
 
-const winningCombos = ['']
+const winningCombos = [
+  [0, 1, 2],[3, 4, 5],[6, 7, 8],
+  [0, 3, 6],[1, 4, 7],[2, 5, 8],
+  [0, 4, 8],[2, 4, 6]
+];
+
 console.log(winningCombos)
-
 /*----------------------Variables (state) --------------------------*/
 // variable, on the other hand, alters its value according to the equation
 
@@ -29,9 +32,11 @@ const squareEls = document.querySelectorAll(".board > div")
 console.log(squareEls)
 const messageEl = document.querySelector("#message")
 console.log(messageEl)
+const boardEl = document.querySelector('.board')
 
 /*--------------------------- Event Listeners -----------------------*/
 
+boardEl.addEventListener('click', handleClick) 
 
 
 /*------------------------------ Functions --------------------------*/
@@ -53,6 +58,24 @@ function init() {
   winner = null
   render()
 }
+
+// Step 6A-6H within the handleClick function 
+// handleClick
+function handleClick(evt) {
+  let sqIdx = parseInt(evt.target.id[2])
+  if (winner === 1 || winner === -1) {
+    return
+  }
+  if (board[sqIdx]) {
+    return 
+  }
+  board[sqIdx] = turn 
+  turn = turn * -1 
+  
+}
+
+// Step 6d: this step we're only creating return statements for two events: One is if the winner value is 1(x) or -1(o), we will return nothing. The other event is if there is a value in the sqidx (other player can't access the square and override the value) ex. [1, null, null, null, null, null, null, null, null]
+// we're setting this up so that in these two events nothing will happen
 
 // Step 4 - The state of the game should be displayed to the user. We typed out a function named render above - we now have to define what our render function does. 
 // 4a) Create a function called render
