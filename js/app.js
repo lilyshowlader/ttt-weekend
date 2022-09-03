@@ -45,10 +45,13 @@ const resetBtnEl = document.querySelector('#reset-button')
 
 
 /*--------------------------- Event Listeners -----------------------*/
-
+//Syntax for addEventListener - element.addEventListener(event, function)
 boardEl.addEventListener('click', handleClick) 
-// the above event listener is passing an event object to the handleClick function 
+// the eventlistener was added to the "Bigger picture element" which is the board and not to the squares, since squares are a nodeList because the squares are added in the HTML and not Javascript. We didn't add an eventListener to squareEls because squareEls is a node list. 
+// the action is click. the click can be enter, or up arrow or mouse click. above event listener is passing an event object to the handleClick function. we're saying when someone clicks on the board, the handleClick function executes. 
+// we are using ONE event listener to one element instead of 9 because we are taking advantage of bubbling. with bubbling - we can add an event listener to a top level object, and it can access the individual elements that are nested in the parent element 
 resetBtnEl.addEventListener('click', init)
+// reset button element is the big picture when function/action click is done, the initialization function happens// you invoke the init function when clicking on the reset button 
 
 /*------------------------------ Functions --------------------------*/
 // Step 3 - Upon loading, the game state should be initialized, and a function 
@@ -85,25 +88,31 @@ function init() {
 // Step 6d: this step we're only creating return statements for two events: One is if the winner value is 1(x) or -1(o), we will return nothing. The other event is if there is a value in the sqidx (other player can't access the square and override the value) ex. [1, null, null, null, null, null, null, null, null]
 // we're setting this up so that in these two events nothing will happen
 // handleClick
+
 function handleClick(evt) {
   console.log(evt.target)
   // Convert the ID sq string into a usable number
-  let sqIdx = parseInt(evt.target.id[2])
-  console.log(sqIdx)
-  if (isNaN(sqIdx)) {
-  // if a user clicks on something BESIDES a board square (but within the board section/space) we don't want that to affect the game. So we return, which exits this function 
-    return 
-  }
-  if (winner) {
-    return
-  }
-  if (board[sqIdx]) {
-    return 
-  }
+  // the first thing we want to do is grab the index of whatever square was clicked by the user, which contains the DIV ids, then we need to change the string to a number, which represents the square in number form
+  // below we are targeting the ID, accessing the 2nd index of the string (which is the number we want) and then using parse int to convert the string into a number
   // When a user clicks on one of the divs(squares), we can figure out which square it was by:
     // finding the ID on evt.target
     // that ID from the div should correspond with the appropriate element in the board array 
     
+  let sqIdx = parseInt(evt.target.id[2])
+// the sqIdx represents two things. 1 - the square ID in HTML and the position in the board state variable 
+  if (isNaN(sqIdx)) {
+  // if a user clicks on something BESIDES a board square (but within the board section/space) we don't want that to affect the game. So we return, which moves this function forward. (moves on)
+    return 
+  }
+  if (winner) {
+    return
+  // we are saying if there is a winner, the game should be stopped at that point 
+  }
+  if (board[sqIdx]) {
+    return 
+  // above we are saying in a square on the board is occupied, that square should not be able to be clicked on again/ we need to get out of step
+  }
+  // below, depending on what square is clicked, that determines who's turn it is or who's turn it is next
   board[sqIdx] = turn 
   // when the line of code below runs, the turn will update by multiplying by -1. In the initialization function, turn is equal to 1 which represents X (X goes first). When a user clicks on the next square, this handleClick function will run, and update the value of turn (by multiplying by negative one) which would update turn to -1 (0). The line below is how the player switches from X to O. 
   turn = turn * -1 
@@ -163,6 +172,8 @@ function getWinner() {
 // the square is only holding three options of data, either blank x or O. that is all that square does but the board monitors all of the individual squares. 
 
 
+
+
 function render() {
   board.forEach(function(square, idx) {
   // check if square is 1, -1 or null
@@ -177,14 +188,15 @@ function render() {
       squareEls[idx].textContent = ''
     }
   })
-// below // after we render, we need to check if the game is still going on
+// below // after we render, we need to check if the game is still going on, thats why we need to check if a winner has been set
+// below displays who's turn it is if the game is still going
   if (winner === null) {
     if(turn === 1) {
       messageEl.textContent = "Player One- Time to play!"
     } else {
       messageEl.textContent = "Player Two- Time to play!"
     }
-    // the above displays who's turn it is
+    // below, if the game is finished, we are setting the message to either its a tie or congratulating player one or two won
   } else if (winner === 'T') {
     messageEl.textContent = "It's a tie!"
   } else if (winner === 1) {
