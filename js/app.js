@@ -12,13 +12,17 @@ const winningCombos = [
 console.log(winningCombos)
 /*----------------------Variables (state) --------------------------*/
 // variable, on the other hand, alters its value according to the equation
-
+// whatever we need to track over the course of the game that will change 
 // Step 1 - Define the required variables used to track the state of the game
 // 1a) Use a variable named `board` to represent the state of the squares on the board.
 // 1b) Use a variable named `turn` to track whose turn it is.
 // 1c) Use a variable named `winner` to represent if anyone has won yet, or if a tie has occurred.
 let board, turn, winner
 
+// board is reffering to all the squares on the tic tac toe board. the state of the squares will change depending on who is clicking on what. 
+// turn will also be changing because there are two players, X and O (1 & -1)
+// winner will be a boolean - this will also change
+// if you think about it - everytime a user clicks on something - these variables will change 
 
 /*------------------------ Cached Element References ----------------*/
 // Step 2 - Store cached element references
@@ -27,17 +31,23 @@ let board, turn, winner
 // 2b) In a constant called `messageEl`, store the element that displays the 
 //    game's status on the page.
 
-//Question - why did we select the class and not the section?
+// Keep in mind, any items passed into querySelector, querySelectorAll, and getElementById must be in string-format 
+// everything that you put in your cached element references gives you access to your HTML
 const squareEls = document.querySelectorAll(".board > div")
 console.log(squareEls)
+// above we are using the child selector to access all of the divs which contain the squares 
 const messageEl = document.querySelector("#message")
 console.log(messageEl)
+// the message element disp lays the message for who's turn it is or who has won 
 const boardEl = document.querySelector('.board')
 const resetBtnEl = document.querySelector('#reset-button')
+
+
 
 /*--------------------------- Event Listeners -----------------------*/
 
 boardEl.addEventListener('click', handleClick) 
+// the above event listener is passing an event object to the handleClick function 
 resetBtnEl.addEventListener('click', init)
 
 /*------------------------------ Functions --------------------------*/
@@ -50,10 +60,21 @@ resetBtnEl.addEventListener('click', init)
 // 3d) Set the `turn` to `1` - which will represent player X.
 // 3e) Set the `winner` to `null`.
 // 3f) Call a function called `render` at the end of the `init` function.
+
+// the beginning settings of the game 
+// the first thing you want to do is set up an initilization function. 
+// this is what the website will look like initially
+// the board is filled with nulls because when you first start the game, the board is empty
+// the turn is set to 1 because the first player is player X and one is equal to X
+// the winner is null because there is no winner yet
+// render is an update to the page (we need to add a render function)
 init()
 
 function init() {
-  board =[null, null, null, null, null, null, null, null, null]
+  board =[
+    null, null, null, 
+    null, null, null,
+    null, null, null]
   console.log(board)
   turn = 1
   winner = null
@@ -65,9 +86,12 @@ function init() {
 // we're setting this up so that in these two events nothing will happen
 // handleClick
 function handleClick(evt) {
+  console.log(evt.target)
+  // Convert the ID sq string into a usable number
   let sqIdx = parseInt(evt.target.id[2])
   console.log(sqIdx)
-  if (!sqIdx && sqIdx !== 0) {
+  if (isNaN(sqIdx)) {
+  // if a user clicks on something BESIDES a board square (but within the board section/space) we don't want that to affect the game. So we return, which exits this function 
     return 
   }
   if (winner) {
@@ -76,7 +100,12 @@ function handleClick(evt) {
   if (board[sqIdx]) {
     return 
   }
+  // When a user clicks on one of the divs(squares), we can figure out which square it was by:
+    // finding the ID on evt.target
+    // that ID from the div should correspond with the appropriate element in the board array 
+    
   board[sqIdx] = turn 
+  // when the line of code below runs, the turn will update by multiplying by -1. In the initialization function, turn is equal to 1 which represents X (X goes first). When a user clicks on the next square, this handleClick function will run, and update the value of turn (by multiplying by negative one) which would update turn to -1 (0). The line below is how the player switches from X to O. 
   turn = turn * -1 
   winner = getWinner()
   render()
@@ -117,6 +146,23 @@ function getWinner() {
 // - If `winner` is equal to `'T'` (tie), render/display a tie message.
 // - Otherwise, render/display a congratulatory message to the player that has won.
 
+
+// We track changes with state variables and reflect those changes to our users with the render (display) function 
+// Make a change to state -> call upon render/display function  so that the changes are visible in the browser (HTML)
+// When we need to make further changes in the game, we should always rely on the information in state (Javascript), and not make any evaluations based on the appearance of our HTML
+
+// the render function runs every single time a move is made 
+// we're gonna be accessing our state variables and manipulating the HTML based on our state variables
+// in reference to board: we are referencing the board in the HTML, to manipulate that data based on the following if else statement 
+// accessing the board tells us where we are putting an X or O or if its blank
+// the value is stored inside board and through RENDER it grabs the value to store in the corresponding HTML 
+
+// the idx refers to the corresponding square in the square
+// board is my map and square idx is Missouri 
+// after the board is updated, we need to look at the board as a whole
+// the square is only holding three options of data, either blank x or O. that is all that square does but the board monitors all of the individual squares. 
+
+
 function render() {
   board.forEach(function(square, idx) {
   // check if square is 1, -1 or null
@@ -131,6 +177,7 @@ function render() {
       squareEls[idx].textContent = ''
     }
   })
+// below // after we render, we need to check if the game is still going on
   if (winner === null) {
     if(turn === 1) {
       messageEl.textContent = "Player One- Time to play!"
