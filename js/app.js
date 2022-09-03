@@ -10,6 +10,7 @@ const winningCombos = [
 ];
 
 console.log(winningCombos)
+
 /*----------------------Variables (state) --------------------------*/
 // variable, on the other hand, alters its value according to the equation
 // whatever we need to track over the course of the game that will change 
@@ -117,20 +118,30 @@ function handleClick(evt) {
   // when the line of code below runs, the turn will update by multiplying by -1. In the initialization function, turn is equal to 1 which represents X (X goes first). When a user clicks on the next square, this handleClick function will run, and update the value of turn (by multiplying by negative one) which would update turn to -1 (0). The line below is how the player switches from X to O. 
   turn = turn * -1 
   winner = getWinner()
+  // getWinner checks if there is a winner 
+  // if the game is on going the winner is null. we need to create a function that helps us determine the winner. if no winner is selected, it will run the entire function until the getWinner has an actual value (not just null)
   render()
+  // above we are updating the board again with the render function 
+  // loops through the state board variables. every single time the board renders, the HTML is changing. 
 }
 
 
 //if (/=== 1 || winner === -1 || winner === 'T') (alternative to if(winner))
 // this functions runs after everytime someone makes a move 
 
+
+
+// this function figures out whether there is a winner, and this function runs after every single move
+// we are using the winningCombos array - which is an array of arrays and it loops through the inner arrays until they get a combo (value) of 3 which equals a winner 
 function getWinner() {
   let bestCombo = []
   winningCombos.forEach(function(combo){
     //combo //combo will look like [0,1,2]
     // let comboValue = 0
     let comboValue = board[combo[0]] + board[combo[1]] + board[combo[2]]
+    // we are accessing the 0,1, and 2nd(number placement)indexes within the combo array and adding up the values to see if it equal three 
     bestCombo.push(Math.abs(comboValue))
+    // need to review above 
   }) 
     let winnersCombo = bestCombo.some(function(value){
       return value === 3
@@ -139,11 +150,14 @@ function getWinner() {
       return turn * -1
     } else if (!board.some(function(value){return value === null})){
       return 'T'
+    // need better explanation 
     }
       return null
     
     
 }
+
+
 
 // Step 4 - The state of the game should be displayed to the user. We typed out a function named render above - we now have to define what our render function does. 
 // 4a) Create a function called render
