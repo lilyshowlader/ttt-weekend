@@ -30,8 +30,10 @@ body {
 }
 
 .underline {
-  text-decoration-style: dotted;
+  text-decoration: underline dotted;
+  text-decoration-color: rgba(236, 181, 209, 0.8);
 }
+
 .board {
   text-align: center;
   display: flex;
