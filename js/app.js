@@ -39,7 +39,7 @@ console.log(squareEls)
 // above we are using the child selector to access all of the divs which contain the squares 
 const messageEl = document.querySelector("#message")
 console.log(messageEl)
-// the message element disp lays the message for who's turn it is or who has won 
+// the message element displays the message for who's turn it is or who has won 
 const boardEl = document.querySelector('.board')
 const resetBtnEl = document.querySelector('#reset-button')
 
@@ -47,7 +47,7 @@ const resetBtnEl = document.querySelector('#reset-button')
 
 /*--------------------------- Event Listeners -----------------------*/
 //Syntax for addEventListener - element.addEventListener(event, function)
-boardEl.addEventListener('click', handleClick) 
+boardEl.addEventListener('click', handleClick)
 // the eventlistener was added to the "Bigger picture element" which is the board and not to the squares, since squares are a nodeList because the squares are added in the HTML and not Javascript. We didn't add an eventListener to squareEls because squareEls is a node list. 
 // the action is click. the click can be enter, or up arrow or mouse click. above event listener is passing an event object to the handleClick function. we're saying when someone clicks on the board, the handleClick function executes. 
 // we are using ONE event listener to one element instead of 9 because we are taking advantage of bubbling. with bubbling - we can add an event listener to a top level object, and it can access the individual elements that are nested in the parent element 
@@ -66,8 +66,7 @@ resetBtnEl.addEventListener('click', init)
 // 3f) Call a function called `render` at the end of the `init` function.
 
 // the beginning settings of the game 
-// the first thing you want to do is set up an initilization function. 
-// this is what the website will look like initially
+// the first thing you want to do is set up an initilization function. this is what the website will look like initially
 // the board is filled with nulls because when you first start the game, the board is empty
 // the turn is set to 1 because the first player is player X and one is equal to X
 // the winner is null because there is no winner yet
@@ -86,7 +85,7 @@ function init() {
 }
 
 // Step 6A-6H within the handleClick function 
-// Step 6d: this step we're only creating return statements for two events: One is if the winner value is 1(x) or -1(o), we will return nothing. The other event is if there is a value in the sqidx (other player can't access the square and override the value) ex. [1, null, null, null, null, null, null, null, null]
+// Step 6d: this step we're only creating return statements for two events:  if the winner value is 1(x) or -1(o), we will return nothing. The other event is if there is a value in the sqidx (other player can't access the square and override the value) ex. [1, null, null, null, null, null, null, null, null]
 // we're setting this up so that in these two events nothing will happen
 // handleClick
 
@@ -159,6 +158,7 @@ function getWinner() {
 
 
 
+
 // Step 4 - The state of the game should be displayed to the user. We typed out a function named render above - we now have to define what our render function does. 
 // 4a) Create a function called render
 // 4b) Loop over `board` and for each element (use forEach):
@@ -171,7 +171,7 @@ function getWinner() {
 
 
 // We track changes with state variables and reflect those changes to our users with the render (display) function 
-// Make a change to state -> call upon render/display function  so that the changes are visible in the browser (HTML)
+// Make a change to state -> call upon render/display function so that the changes are visible in the browser (HTML)
 // When we need to make further changes in the game, we should always rely on the information in state (Javascript), and not make any evaluations based on the appearance of our HTML
 
 // the render function runs every single time a move is made 
@@ -206,17 +206,17 @@ function render() {
 // below displays who's turn it is if the game is still going
   if (winner === null) {
     if(turn === 1) {
-      messageEl.textContent = "Player One- Time to play!"
+      messageEl.textContent = "player one, it's time to play!"
     } else {
-      messageEl.textContent = "Player Two- Time to play!"
+      messageEl.textContent = "player two, it's time to play!"
     }
     // below, if the game is finished, we are setting the message to either its a tie or congratulating player one or two won
   } else if (winner === 'T') {
-    messageEl.textContent = "It's a tie!"
+    messageEl.textContent = "it's a tie!"
   } else if (winner === 1) {
-    messageEl.textContent = "Congrats Player One, You Won!"
+    messageEl.textContent = "congrats player one, you won!"
     } else if (winner === -1)
-    messageEl.textContent = "Congrats Player Two, You Won!"
+    messageEl.textContent = "congrats player two, you won!"
 }
   
 
