@@ -59,8 +59,7 @@ resetBtnEl.addEventListener('click', init)
 // should be called to render this game state
 // 3a) Create a function called `init`.
 // 3b) Call this `init` function when the app loads.
-// 3c) Set the `board` variable to an array containing nine `null`s to 
-//    represent empty squares.
+// 3c) Set the `board` variable to an array containing nine `null`s to represent empty squares.
 // 3d) Set the `turn` to `1` - which will represent player X.
 // 3e) Set the `winner` to `null`.
 // 3f) Call a function called `render` at the end of the `init` function.
@@ -149,7 +148,8 @@ function getWinner() {
       return turn * -1
     } else if (!board.some(function(value){return value === null})){
       return 'T'
-    // need better explanation 
+    // if statement is checking to see if there are null  values within the board array. We are doing that with the .some() method, which evaluates to true if there are any matching values or false if there are no matching values.
+    //if there are no matching values, in this case no null values, we want it to return 'T'. However, since .some() would evaluate to false if there are no null values, we want to use the bang operator ! to flip that false  into true  so that the if statement will work.In essence, we're saying if (not some)  which is that same as saying if( none)
     }
       return null
     
@@ -217,6 +217,7 @@ function render() {
     messageEl.textContent = "congrats player one, you won!"
     } else if (winner === -1)
     messageEl.textContent = "congrats player two, you won!"
+
 }
   
 
